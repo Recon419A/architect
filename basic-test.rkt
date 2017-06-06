@@ -2,10 +2,10 @@
 
 (require gigls/unsafe)
 
-(define hallway-six (image-show (image-load "/media/sf_Google_Drive/Map Generator/architect/Dungeon Tile 42.jpg")))
+(define hallway-six (image-show (image-load "/home/recon/Dropbox/architect/Hallways/Dungeon Tile 42.jpg")))
 
 (define (hallway repetitions)
-  (let ([hallway-tile (image-load "/media/sf_Google_Drive/Map Generator/architect/Dungeon Tile 42.jpg")]
+  (let ([hallway-tile (image-load "/home/recon/Dropbox/architect/Hallways/Dungeon Tile 42.jpg")]
         [blank-image (image-new 1200 (* repetitions 1200))])
 
     (image-select-rectangle! hallway-tile REPLACE 0 0 1200 1200)
