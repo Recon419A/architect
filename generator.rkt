@@ -19,9 +19,12 @@
       (cons new-db (rotate each-tile i)))
     new-db))
 
-(define (valid! a-tile north-neighbor east-neighbor)
-  (equal! (tile-north a-tile) (tile-south north-neighbor))
-  (equal! (tile-east a-tile) (tile-west east-neighbor)))
+(define (valid! a-tile north-neighbor east-neighbor
+                south-neighbor west-neighbor)
+  (and north-neighbor (equal! (tile-north a-tile) (tile-south north-neighbor)))
+  (and east-neighbor (equal! (tile-east a-tile) (tile-west east-neighbor)))
+  (and south-neighbor (equal! (tile-south a-tile) (tile-north south-neighbor)))
+  (and west-neighbor (equal! (tile-west a-tile) (tile-east west-neighbor))))
 
 (define (map-valid! columns)
   (let ([width (length columns)]
@@ -32,11 +35,17 @@
             [east-column (+ center-column 1)]
             [south-row (- center-row 1)]
             [west-column (- center-column 1)])
-        (valid! (list-ref (list-ref columns center-column) center-row)
-                (list-ref (list-ref columns center-column) north-row)
-                (list-ref (list-ref columns east-column) center-row))))))
-;;                (list-ref (list-ref columns center-column) south-row)
-;;                (list-ref (list-ref columns west-column) center-row))))))
+        (valid! (ref-null (ref-null columns center-column) center-row)
+                (ref-null (ref-null columns center-column) north-row)
+                (ref-null (ref-null columns east-column) center-row)
+                (ref-null (ref-null columns center-column) south-row)
+                (ref-null (ref-null columns west-column) center-row))))))
+
+(define (ref-null lst index)
+  (cond [(equal? #f lst) #f]
+        [(< index 0) #f]
+        [(>= index (length lst)) #f]
+        [#t (list-ref lst index)]))
 
 (define (make-map width height)
   (let ([the-map (initialize-map width height)])
