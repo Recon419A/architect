@@ -41,7 +41,7 @@
 (define (make-map width height)
   (let ([the-map (initialize-map width height)])
     (map-valid! the-map)
-    (evaluate (solve asserts) the-map)))
+    (evaluate the-map (solve asserts))))
 
 (define (initialize-map width height)
   (if (equal? 0 width) null
@@ -51,4 +51,24 @@
   (if (equal? 0 height) null
       (cons (choose-random tiles) (initialize-column (- height 1)))))
 
+(define (show-map a-map)
+  (let* ([width (length a-map)]
+         [height (length (list-ref a-map 0))]
+         [blank-image (image-new (* 1200 width) (* 1200 height))])
+    (for ([column (range width)]
+          [row (range height)])
+      (let ([current-tile (list-ref (list-ref a-map column) row)])
+        (image-select-rectangle! (tile-image current-tile)
+                                 REPLACE 0 0 1200 1200)
+        (gimp-edit-copy-visible (tile-image current-tile))
+        (image-select-nothing! (tile-image current-tile))
+        (image-select-rectangle! blank-image REPLACE
+                                 (* column 1200) (* row 1200)
+                                 1200 1200)
+        (gimp-edit-paste (image-get-layer blank-image) 1)
+        (gimp-image-flatten blank-image)))
+    (image-select-nothing! blank-image)
+    blank-image))
+
 (make-map 2 2)
+;;(image-show (show-map (make-map 2 2)))
