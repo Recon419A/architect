@@ -5,13 +5,16 @@
 (require "choice.rkt" "assert.rkt")
 
 (define (rotate tile-1 iterations)
-  (if (equal? 0 iterations) tile
-      (rotate (tile (gimp-item-transform-rotate-simple (tile-image tile-1)
-                                                       0 #t 600 600)
-                    (tile-east tile-1) (tile-south tile-1)
-                    (tile-west tile-1) (tile-north tile-1))
-              (- iterations 1))))
-
+  (if (equal? 0 iterations) tile-1
+      (begin
+        (image-select-rectangle! (tile-image tile-1)
+                                 REPLACE 0 0 1200 1200)
+        (rotate (tile (car (gimp-item-transform-rotate-simple (tile-image tile-1)
+                                                              0 1 600 600))
+                      (tile-east tile-1) (tile-south tile-1)
+                      (tile-west tile-1) (tile-north tile-1))
+                (- iterations 1)))))
+  
 (define (add-rotations tiles-db)
   (let ([new-db '()])
     (for ([i 4]
@@ -29,11 +32,11 @@
 (define (map-valid! columns)
   (let ([width (length columns)]
         [height (length (list-ref columns 0))])
-    (for ([center-column (range (- width 1))]
-          [center-row (range (- height 1))])
-      (let ([north-row (+ center-row 1)]
+    (for ([center-column (range width)]
+          [center-row (range height)])
+      (let ([north-row (- center-row 1)]
             [east-column (+ center-column 1)]
-            [south-row (- center-row 1)]
+            [south-row (+ center-row 1)]
             [west-column (- center-column 1)])
         (valid! (ref-null (ref-null columns center-column) center-row)
                 (ref-null (ref-null columns center-column) north-row)
@@ -79,4 +82,13 @@
     (image-select-nothing! blank-image)
     blank-image))
 
-(image-show (show-map (make-map 4 4)))
+;;(define a-map (make-map 3 3))
+
+;;(image-show (show-map a-map))
+
+;; (image-show (tile-image (list-ref tiles 1)))
+
+;; (image-show (tile-image (rotate (list-ref tiles 1) 1)))
+
+(tile-image (list-ref tiles 1))
+(tile-image (rotate (list-ref tiles 1) 1))
