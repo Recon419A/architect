@@ -55,8 +55,8 @@
   (let* ([width (length a-map)]
          [height (length (list-ref a-map 0))]
          [blank-image (image-new (* 1200 width) (* 1200 height))])
-    (for ([column (range width)]
-          [row (range height)])
+    (for* ([column (range width)]
+           [row (range height)])
       (let ([current-tile (list-ref (list-ref a-map column) row)])
         (image-select-rectangle! (tile-image current-tile)
                                  REPLACE 0 0 1200 1200)
@@ -70,5 +70,4 @@
     (image-select-nothing! blank-image)
     blank-image))
 
-(make-map 2 2)
-;;(image-show (show-map (make-map 2 2)))
+(image-show (show-map (make-map 3 3)))
