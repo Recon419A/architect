@@ -70,4 +70,4 @@
     (image-select-nothing! blank-image)
     blank-image))
 
-(image-show (show-map (make-map 3 3)))
+(image-show (show-map (make-map 4 4)))
