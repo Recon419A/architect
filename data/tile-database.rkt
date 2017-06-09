@@ -6,14 +6,14 @@
 
 (struct tile (image north east south west))
 
-(define prefix "/home/recon/Dropbox/architect/Hallways/")
+(define prefix "/home/recon/Dropbox/architect/data/")
 
 ;; Numeric values for edge types
 ;; 0: solid edge
 ;; 1: two open squares in center of edge
 
 (define tile-001 (tile (image-load (string-append prefix "Dungeon Tile 01.jpg"))
-                       1 0 1 0))
+                  1 0 1 0))
 (define tile-002 (tile (image-load (string-append prefix "Dungeon Tile 02.jpg"))
                        0 1 1 0))
 (define tile-003 (tile (image-load (string-append prefix "Dungeon Tile 03.jpg"))

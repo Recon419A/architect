@@ -1,20 +1,28 @@
 #lang rosette
 
 (require gigls/unsafe)
-(require "tile-database.rkt")
-(require "choice.rkt" "assert.rkt")
+(require "../data/tile-database.rkt")
+(require "rosette-pcg-utilities/choice.rkt"
+         "rosette-pcg-utilities/assert.rkt")
 
 (define (rotate tile-1 iterations)
   (if (equal? 0 iterations) tile-1
       (begin
-        (image-select-rectangle! (tile-image tile-1)
-                                 REPLACE 0 0 1200 1200)
-        (rotate (tile (car (gimp-item-transform-rotate-simple (tile-image tile-1)
-                                                              0 1 600 600))
-                      (tile-east tile-1) (tile-south tile-1)
-                      (tile-west tile-1) (tile-north tile-1))
-                (- iterations 1)))))
-  
+        (let ([blank-image (image-new 1200 1200)])
+          (image-select-rectangle! (tile-image tile-1)
+                                   REPLACE 0 0 1200 1200)
+          (gimp-edit-copy-visible (tile-image tile-1))
+          (image-select-nothing! (tile-image tile-1))
+          (image-select-rectangle! blank-image REPLACE
+                                   0 0 1200 1200)
+          (let ([temp (car (gimp-edit-paste (image-get-layer blank-image) 1))])
+            (gimp-item-transform-rotate-simple temp 0 1 600 600)
+            (gimp-image-flatten blank-image))
+          (rotate (tile blank-image
+                        (tile-west tile-1) (tile-north tile-1)
+                        (tile-east tile-1) (tile-south tile-1))
+                  (- iterations 1))))))
+
 (define (add-rotations tiles-db)
   (let ([new-db '()])
     (for ([i 4]
@@ -82,13 +90,13 @@
     (image-select-nothing! blank-image)
     blank-image))
 
-(define a-map (make-map 3 3))
+;; (define a-map (make-map 3 3))
 
-(image-show (show-map a-map))
+;; (image-show (show-map a-map))
 
-;; (image-show (tile-image (list-ref tiles 1)))
+(image-show (tile-image (list-ref tiles 1)))
 
-;; (image-show (tile-image (rotate (list-ref tiles 1) 1)))
+(image-show (tile-image (rotate (list-ref tiles 1) 1)))
 
 ;; (tile-image (list-ref tiles 1))
 ;; (tile-image (rotate (list-ref tiles 1) 1))
