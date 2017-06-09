@@ -59,17 +59,17 @@
         [#t (list-ref lst index)]))
 
 (define (make-map width height)
-  (let ([the-map (initialize-map width height)])
+  (let ([the-map (initialize-map width height tiles)])
     (map-valid! the-map)
     (evaluate the-map (solve asserts))))
 
-(define (initialize-map width height)
+(define (initialize-map width height tiles)
   (if (equal? 0 width) null
-      (cons (initialize-column height) (initialize-map (- width 1) height))))
+      (cons (initialize-column height tiles) (initialize-map (- width 1) height tiles))))
 
-(define (initialize-column height)
+(define (initialize-column height tiles)
   (if (equal? 0 height) null
-      (cons (choose-random tiles) (initialize-column (- height 1)))))
+      (cons (choose-random tiles) (initialize-column (- height 1) tiles))))
 
 (define (show-map a-map)
   (let* ([width (length a-map)]
@@ -90,13 +90,10 @@
     (image-select-nothing! blank-image)
     blank-image))
 
-;; (define a-map (make-map 3 3))
+(define a-map (make-map 3 3))
 
-;; (image-show (show-map a-map))
+(image-show (show-map a-map))
 
-(image-show (tile-image (list-ref tiles 1)))
+;; (image-show (tile-image (list-ref tiles 1)))
 
-(image-show (tile-image (rotate (list-ref tiles 1) 1)))
-
-;; (tile-image (list-ref tiles 1))
-;; (tile-image (rotate (list-ref tiles 1) 1))
+;; (image-show (tile-image (rotate (list-ref tiles 1) 1)))
