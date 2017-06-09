@@ -82,13 +82,13 @@
     (image-select-nothing! blank-image)
     blank-image))
 
-;;(define a-map (make-map 3 3))
+(define a-map (make-map 3 3))
 
-;;(image-show (show-map a-map))
+(image-show (show-map a-map))
 
 ;; (image-show (tile-image (list-ref tiles 1)))
 
 ;; (image-show (tile-image (rotate (list-ref tiles 1) 1)))
 
-(tile-image (list-ref tiles 1))
-(tile-image (rotate (list-ref tiles 1) 1))
+;; (tile-image (list-ref tiles 1))
+;; (tile-image (rotate (list-ref tiles 1) 1))
