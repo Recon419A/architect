@@ -5,7 +5,10 @@
 
 (provide rotate-image
          rotate-tile
-         add-rotations)
+         add-rotations
+         map-ref
+         map-width
+         map-height)
 
 (define (rotate-image image)
   (let* ([width 1200]
@@ -31,3 +34,12 @@
   (for*/list ([i 4]
               [each-tile base-tiles])
     (rotate-tile each-tile i)))
+
+(define (map-ref map-tiles x y)
+  (list-ref (list-ref map-tiles x) y))
+
+(define (map-width map-tiles)
+  (length map-tiles))
+
+(define (map-height map-tiles)
+  (length (list-ref map-tiles 0)))

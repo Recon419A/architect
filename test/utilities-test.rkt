@@ -22,3 +22,11 @@
 (define (smoke-test-add-rotations)
   (for ([each-tile (add-rotations (list rotate-test-tile))])
     (image-show (tile-image each-tile))))
+
+(check-equal? (map-ref '((1 2) (3 4)) 0 0) 1)
+(check-equal? (map-ref '((1 2) (3 4)) 0 1) 2)
+(check-equal? (map-ref '((1 2) (3 4)) 1 0) 3)
+(check-equal? (map-ref '((1 2) (3 4)) 1 1) 4)
+
+(check-equal? (map-width '((1 2) (3 4) (5 6))) 3)
+(check-equal? (map-height '((1 2) (3 4) (5 6))) 2)
