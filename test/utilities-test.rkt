@@ -22,6 +22,3 @@
 (define (smoke-test-add-rotations)
   (for ([each-tile (add-rotations (list rotate-test-tile))])
     (image-show (tile-image each-tile))))
-
-(define (smoke)
-  (smoke-test-rotate-image))
