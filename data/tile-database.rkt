@@ -1,11 +1,9 @@
 #lang rosette
 
-(require gigls/unsafe)
+(require gigls/unsafe
+         "../source/tile.rkt")
 
-(provide tiles tile tile-image tile-north tile-east tile-south tile-west
-         rotate-smoke-test-tile)
-
-(struct tile (image north east south west))
+(provide tiles rotate-test-tile)
 
 (define prefix "/home/recon/Dropbox/architect/data/")
 
@@ -27,4 +25,4 @@
                        1 1 1 1))
 
 (define tiles (list tile-001 tile-002 tile-003 tile-004 tile-010 tile-020))
-(define rotate-smoke-test-tile tile-002)
+(define rotate-test-tile tile-002)

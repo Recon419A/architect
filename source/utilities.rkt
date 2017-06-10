@@ -1,8 +1,10 @@
 #lang rosette
 
-(require gigls/unsafe)
+(require gigls/unsafe
+         "tile.rkt")
 
-(provide rotate-image)
+(provide rotate-image
+         rotate-tile)
 
 (define (rotate-image image)
   (let* ([width (car (gimp-drawable-width image))]
@@ -16,3 +18,10 @@
        pasted-image 0 1 (/ width 2) (/ height 2))
       (gimp-image-flatten new-image)
       new-image)))
+
+(define (rotate-tile t iterations)
+  (if (equal? 0 iterations) t
+      (rotate-tile (tile (rotate-image (tile-image t))
+                         (tile-west t) (tile-north t)
+                         (tile-east t) (tile-south t))
+                   (- iterations 1))))

@@ -1,45 +1,16 @@
 #lang rosette
 
-(require gigls/unsafe)
-(require "../data/tile-database.rkt")
-(require "rosette-pcg-utilities/choice.rkt"
-         "rosette-pcg-utilities/assert.rkt")
-
-(define (rotate tile-1 iterations)
-  (if (equal? 0 iterations) tile-1
-      (begin
-        (let ([blank-image (image-new 1200 1200)])
-          (image-select-rectangle! (tile-image tile-1)
-                                   REPLACE 0 0 1200 1200)
-          (gimp-edit-copy-visible (tile-image tile-1))
-          (image-select-nothing! (tile-image tile-1))
-          (image-select-rectangle! blank-image REPLACE
-                                   0 0 1200 1200)
-          (let ([temp (car (gimp-edit-paste (image-get-layer blank-image) 1))])
-            (gimp-item-transform-rotate-simple temp 0 1 600 600)
-            (gimp-image-flatten blank-image))
-          (rotate (tile blank-image
-                        (tile-west tile-1) (tile-north tile-1)
-                        (tile-east tile-1) (tile-south tile-1))
-                  (- iterations 1))))))
-
-(define (rotate-image image)
-  (let* ([width (gimp-drawable-width image)]
-         [height (gimp-drawable-height image)]
-         [new-image (image-new height width)])
-    (image-select-rectangle! image REPLACE 0 0 width height)
-    (gimp-edit-copy-visible image)
-    (image-select-nothing! image)
-    (gimp-item-transform-rotate-simple
-     (car (gimp-edit-paste (image-get-layer new-image)))
-     0 1 (/ width 2) (/ height 2))
-    (gimp-image-flatten new-image)))
+(require gigls/unsafe
+         "rosette-pcg-utilities/choice.rkt"
+         "rosette-pcg-utilities/assert.rkt"
+         "utilities.rkt"
+         "../data/tile-database.rkt")
 
 (define (add-rotations tiles-db)
   (let ([new-db '()])
     (for ([i 4]
           [each-tile tiles-db])
-      (cons new-db (rotate each-tile i)))
+      (cons new-db (rotate-tile each-tile i)))
     new-db))
 
 (define (valid! a-tile north-neighbor east-neighbor
