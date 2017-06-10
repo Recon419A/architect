@@ -23,6 +23,18 @@
                         (tile-east tile-1) (tile-south tile-1))
                   (- iterations 1))))))
 
+(define (rotate-image image)
+  (let* ([width (gimp-drawable-width image)]
+         [height (gimp-drawable-height image)]
+         [new-image (image-new height width)])
+    (image-select-rectangle! image REPLACE 0 0 width height)
+    (gimp-edit-copy-visible image)
+    (image-select-nothing! image)
+    (gimp-item-transform-rotate-simple
+     (car (gimp-edit-paste (image-get-layer new-image)))
+     0 1 (/ width 2) (/ height 2))
+    (gimp-image-flatten new-image)))
+
 (define (add-rotations tiles-db)
   (let ([new-db '()])
     (for ([i 4]

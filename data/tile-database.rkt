@@ -2,7 +2,8 @@
 
 (require gigls/unsafe)
 
-(provide tiles tile tile-image tile-north tile-east tile-south tile-west)
+(provide tiles tile tile-image tile-north tile-east tile-south tile-west
+         rotate-smoke-test-tile)
 
 (struct tile (image north east south west))
 
@@ -26,3 +27,4 @@
                        1 1 1 1))
 
 (define tiles (list tile-001 tile-002 tile-003 tile-004 tile-010 tile-020))
+(define rotate-smoke-test-tile tile-002)
