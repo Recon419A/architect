@@ -1,9 +1,11 @@
 #lang rosette
 
 (require gigls/unsafe
-         "../source/tile.rkt")
+         "../source/tile.rkt"
+         "../source/utilities.rkt")
 
-(provide tiles rotate-test-tile)
+(provide tiles
+         rotate-test-tile)
 
 (define prefix "/home/recon/Dropbox/architect/data/")
 
@@ -24,5 +26,7 @@
 (define tile-020 (tile (image-load (string-append prefix "Dungeon Tile 20.jpg"))
                        1 1 1 1))
 
-(define tiles (list tile-001 tile-002 tile-003 tile-004 tile-010 tile-020))
+(define base-tiles (list tile-001 tile-002 tile-003 tile-004 tile-010 tile-020))
+(define tiles (add-rotations base-tiles))
+
 (define rotate-test-tile tile-002)

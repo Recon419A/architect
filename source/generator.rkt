@@ -6,13 +6,6 @@
          "utilities.rkt"
          "../data/tile-database.rkt")
 
-(define (add-rotations tiles-db)
-  (let ([new-db '()])
-    (for ([i 4]
-          [each-tile tiles-db])
-      (cons new-db (rotate-tile each-tile i)))
-    new-db))
-
 (define (valid! a-tile north-neighbor east-neighbor
                 south-neighbor west-neighbor)
   (and north-neighbor (equal! (tile-north a-tile) (tile-south north-neighbor)))

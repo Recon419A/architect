@@ -4,11 +4,12 @@
          "tile.rkt")
 
 (provide rotate-image
-         rotate-tile)
+         rotate-tile
+         add-rotations)
 
 (define (rotate-image image)
-  (let* ([width (car (gimp-drawable-width image))]
-         [height (car (gimp-drawable-height image))]
+  (let* ([width 1200]
+         [height 1200]
          [new-image (image-new height width)])
     (image-select-rectangle! image REPLACE 0 0 width height)
     (gimp-edit-copy-visible image)
@@ -25,3 +26,8 @@
                          (tile-west t) (tile-north t)
                          (tile-east t) (tile-south t))
                    (- iterations 1))))
+
+(define (add-rotations base-tiles)
+  (for*/list ([i 4]
+              [each-tile base-tiles])
+    (rotate-tile each-tile i)))

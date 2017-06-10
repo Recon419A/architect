@@ -17,5 +17,7 @@
    (check-equal? (tile-south rotate-test-tile) (tile-west rotated-tile))
    (check-equal? (tile-west rotate-test-tile) (tile-north rotated-tile))))
 
+(check-equal? (length (add-rotations (list rotate-test-tile))) 4)
+
 (define (smoke)
   (smoke-test-rotate-image))
