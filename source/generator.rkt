@@ -9,30 +9,11 @@
 (provide make-map
          render-map)
 
-(define (valid! map-tiles row column)
-  (let ([map-tile (map-ref map-tiles row column)]
-        [north-neighbor (north-neighbor map-tiles row column)]
-        [east-neighbor (east-neighbor map-tiles row column)]
-        [south-neighbor (south-neighbor map-tiles row column)]
-        [west-neighbor (west-neighbor map-tiles row column)])
-    (and north-neighbor
-         (equal! (tile-north map-tile) (tile-south north-neighbor)))
-    (and east-neighbor
-         (equal! (tile-east map-tile) (tile-west east-neighbor)))
-    (and south-neighbor
-         (equal! (tile-south map-tile) (tile-north south-neighbor)))
-    (and west-neighbor
-         (equal! (tile-west map-tile) (tile-east west-neighbor)))))
-
-(define (map-valid! map-tiles)
-  (for ([row (range (map-height map-tiles))]
-        [column (range (map-width map-tiles))])
-    (valid! map-tiles row column)))
-
 (define (make-map tiles map-height map-width)
-  (let ([the-map (initialize-map tiles map-height map-width)])
-    (map-valid! the-map)
-    (evaluate the-map (solve asserts))))
+  (clear-asserts!)
+  (let ([map-tiles (initialize-map tiles map-height map-width)])
+    (assert (valid? map-tiles))
+    (evaluate map-tiles (solve asserts))))
 
 (define (initialize-map tiles map-height map-width)
   (if (equal? 0 map-height) null

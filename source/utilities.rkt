@@ -12,7 +12,8 @@
          north-neighbor
          east-neighbor
          south-neighbor
-         west-neighbor)
+         west-neighbor
+         valid?)
 
 (define (rotate-image image)
   (let* ([width 1200]
@@ -75,3 +76,15 @@
 (define (west-neighbor map-tiles row column)
   (and (has-west-neighbor column)
        (map-ref map-tiles row (- column 1))))
+
+(define (valid? map-tiles)
+  (let ([map-height (map-height map-tiles)]
+        [map-width (map-width map-tiles)])
+    (and (for*/and ([row (range map-height)]
+                    [column (range (- map-width 1))])
+           (equal? (tile-east (map-ref map-tiles row column))
+                   (tile-west (map-ref map-tiles row (+ column 1)))))
+         (for*/and ([row (range (- map-height 1))]
+                    [column (range map-width)])
+           (equal? (tile-south (map-ref map-tiles row column))
+                   (tile-north (map-ref map-tiles (+ row 1) column)))))))
