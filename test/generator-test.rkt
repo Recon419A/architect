@@ -1,6 +1,7 @@
 #lang rosette
 
 (require rackunit
+         gigls/unsafe
          "../source/generator.rkt"
          "../source/tile.rkt"
          "../source/utilities.rkt"
@@ -16,3 +17,6 @@
                   (tile-north (map-ref generated-map 1 0)))
     (check-equal? (tile-south (map-ref generated-map 0 1))
                   (tile-north (map-ref generated-map 1 1)))))
+
+(define (smoke-test-render-map map-height map-width)
+  (image-show (render-map (make-map tiles map-height map-width))))

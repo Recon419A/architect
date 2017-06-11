@@ -6,7 +6,8 @@
          "tile.rkt"
          "utilities.rkt")
 
-(provide make-map)
+(provide make-map
+         render-map)
 
 (define (valid! map-tiles row column)
   (let ([map-tile (map-ref map-tiles row column)]
@@ -42,29 +43,21 @@
   (if (equal? 0 map-width) null
       (cons (choose-random tiles) (initialize-row tiles (- map-width 1)))))
 
-(define (show-map a-map)
-  (let* ([width (length a-map)]
-         [height (length (list-ref a-map 0))]
-         [blank-image (image-new (* 1200 width) (* 1200 height))])
-    (for* ([column (range width)]
-           [row (range height)])
-      (let ([current-tile (list-ref (list-ref a-map column) row)])
+(define (render-map map-tiles)
+  (let* ([map-height (map-height map-tiles)]
+         [map-width (map-width map-tiles)]
+         [map-image (image-new (* 1200 map-width) (* 1200 map-height))])
+    (for* ([row (range map-height)]
+           [column (range map-width)])
+      (let ([current-tile (map-ref map-tiles row column)])
         (image-select-rectangle! (tile-image current-tile)
                                  REPLACE 0 0 1200 1200)
         (gimp-edit-copy-visible (tile-image current-tile))
         (image-select-nothing! (tile-image current-tile))
-        (image-select-rectangle! blank-image REPLACE
+        (image-select-rectangle! map-image REPLACE
                                  (* column 1200) (* row 1200)
                                  1200 1200)
-        (gimp-edit-paste (image-get-layer blank-image) 1)
-        (gimp-image-flatten blank-image)))
-    (image-select-nothing! blank-image)
-    blank-image))
-
-;; (define a-map (make-map 3 3))
-
-;; (image-show (show-map a-map))
-
-;; (image-show (tile-image (list-ref tiles 1)))
-
-;; (image-show (tile-image (rotate (list-ref tiles 1) 1)))
+        (gimp-edit-paste (image-get-layer map-image) 1)
+        (gimp-image-flatten map-image)))
+    (image-select-nothing! map-image)
+    map-image))
