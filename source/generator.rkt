@@ -6,29 +6,25 @@
          "utilities.rkt"
          "../data/tile-database.rkt")
 
-(define (valid! a-tile north-neighbor east-neighbor
-                south-neighbor west-neighbor)
-  (and north-neighbor (equal! (tile-north a-tile) (tile-south north-neighbor)))
-  (and east-neighbor (equal! (tile-east a-tile) (tile-west east-neighbor)))
-  (and south-neighbor (equal! (tile-south a-tile) (tile-north south-neighbor)))
-  (and west-neighbor (equal! (tile-west a-tile) (tile-east west-neighbor))))
+(define (valid! map-tiles row column)
+  (let ([map-tile (map-ref row column)]
+        [north-neighbor (north-neighbor map-tiles row column)]
+        [east-neighbor (east-neighbor map-tiles row column)]
+        [south-neighbor (south-neighbor map-tiles row column)]
+        [west-neighbor (west-neighbor map-tiles row column)])
+    (and (north-neighbor)
+         (equal! (tile-north map-tile) (tile-south north-neighbor)))
+    (and (east-neighbor)
+         (equal! (tile-east map-tile) (tile-west east-neighbor)))
+    (and (south-neighbor)
+         (equal! (tile-south map-tile) (tile-north south-neighbor)))
+    (and (west-neighbor)
+         (equal! (tile-west map-tile) (tile-east west-neighbor)))))
 
-(define (map-valid! columns)
-  (let ([width (length columns)]
-        [height (length (list-ref columns 0))])
-    (for ([x (range width)]
-          [y (range height)])
-      (let ([center-tile (map-ref columns x y)]
-            [north-neighbor (map-ref columns x (- y 1))]
-            [east-neighbor (map-ref columns (+ x 1) y)]
-            [south-neighbor (map-ref columns x (+ y 1))]
-            [west-neighbor (map-ref columns (- x 1) y)])))))
-
-(define (ref-null lst index)
-  (cond [(equal? #f lst) #f]
-        [(< index 0) #f]
-        [(>= index (length lst)) #f]
-        [#t (list-ref lst index)]))
+(define (map-valid! map-tiles)
+  (for ([row (range (map-height map-tiles))]
+        [column (range (map-width map-tiles))])
+    (valid! map-tiles row column)))
 
 (define (make-map width height)
   (let ([the-map (initialize-map width height tiles)])
