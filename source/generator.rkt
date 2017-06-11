@@ -16,17 +16,13 @@
 (define (map-valid! columns)
   (let ([width (length columns)]
         [height (length (list-ref columns 0))])
-    (for ([center-column (range width)]
-          [center-row (range height)])
-      (let ([north-row (- center-row 1)]
-            [east-column (+ center-column 1)]
-            [south-row (+ center-row 1)]
-            [west-column (- center-column 1)])
-        (valid! (ref-null (ref-null columns center-column) center-row)
-                (ref-null (ref-null columns center-column) north-row)
-                (ref-null (ref-null columns east-column) center-row)
-                (ref-null (ref-null columns center-column) south-row)
-                (ref-null (ref-null columns west-column) center-row))))))
+    (for ([x (range width)]
+          [y (range height)])
+      (let ([center-tile (map-ref columns x y)]
+            [north-neighbor (map-ref columns x (- y 1))]
+            [east-neighbor (map-ref columns (+ x 1) y)]
+            [south-neighbor (map-ref columns x (+ y 1))]
+            [west-neighbor (map-ref columns (- x 1) y)])))))
 
 (define (ref-null lst index)
   (cond [(equal? #f lst) #f]

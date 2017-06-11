@@ -8,7 +8,11 @@
          add-rotations
          map-ref
          map-width
-         map-height)
+         map-height
+         north-neighbor
+         east-neighbor
+         south-neighbor
+         west-neighbor)
 
 (define (rotate-image image)
   (let* ([width 1200]
@@ -43,3 +47,31 @@
 
 (define (map-height map-tiles)
   (length (list-ref map-tiles 0)))
+
+(define (has-north-neighbor y)
+  (>= (- y 1) 0))
+
+(define (north-neighbor map-tiles x y)
+  (and (has-north-neighbor y)
+       (map-ref map-tiles x (- y 1))))
+
+(define (has-east-neighbor map-width x)
+  (< (+ x 1) map-width))
+
+(define (east-neighbor map-tiles x y)
+  (and (has-east-neighbor (map-width map-tiles) x)
+       (map-ref map-tiles (+ x 1) y)))
+
+(define (has-south-neighbor map-height y)
+  (< (+ y 1) map-height))
+
+(define (south-neighbor map-tiles x y)
+  (and (has-south-neighbor (map-height map-tiles))
+       (map-ref map-tiles x (+ y 1))))
+
+(define (has-west-neighbor x)
+  (>= (- x 1) 0))
+
+(define (west-neighbor map-tiles x y)
+  (and (has-west-neighbor x)
+       (map-ref (- x 1) y)))
