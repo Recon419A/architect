@@ -35,10 +35,25 @@
                      (3 4)
                      (5 6)))
 
-(check-equal? (map-width test-map-2) 3)
-(check-equal? (map-height test-map-2) 2)
+(check-equal? (map-width test-map-2) 2)
+(check-equal? (map-height test-map-2) 3)
 
 (check-equal? (north-neighbor test-map-1 0 0) #f)
-(check-equal? (north-neighbor test-map-1 0 1) 1)
-(check-equal? (north-neighbor test-map-1 1 0) #f)
-(check-equal? (north-neighbor test-map-1 1 1) 3)
+(check-equal? (north-neighbor test-map-1 0 1) #f)
+(check-equal? (north-neighbor test-map-1 1 0) 1)
+(check-equal? (north-neighbor test-map-1 1 1) 2)
+
+(check-equal? (east-neighbor test-map-1 0 0) 2)
+(check-equal? (east-neighbor test-map-1 0 1) #f)
+(check-equal? (east-neighbor test-map-1 1 0) 4)
+(check-equal? (east-neighbor test-map-1 1 1) #f)
+
+(check-equal? (south-neighbor test-map-1 0 0) 3)
+(check-equal? (south-neighbor test-map-1 0 1) 4)
+(check-equal? (south-neighbor test-map-1 1 0) #f)
+(check-equal? (south-neighbor test-map-1 1 1) #f)
+
+(check-equal? (west-neighbor test-map-1 0 0) #f)
+(check-equal? (west-neighbor test-map-1 0 1) 1)
+(check-equal? (west-neighbor test-map-1 1 0) #f)
+(check-equal? (west-neighbor test-map-1 1 1) 3)

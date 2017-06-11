@@ -39,39 +39,39 @@
               [each-tile base-tiles])
     (rotate-tile each-tile i)))
 
-(define (map-ref map-tiles x y)
-  (list-ref (list-ref map-tiles x) y))
+(define (map-ref map-tiles row column)
+  (list-ref (list-ref map-tiles row) column))
 
 (define (map-width map-tiles)
-  (length map-tiles))
-
-(define (map-height map-tiles)
   (length (list-ref map-tiles 0)))
 
-(define (has-north-neighbor y)
-  (>= (- y 1) 0))
+(define (map-height map-tiles)
+  (length map-tiles))
 
-(define (north-neighbor map-tiles x y)
-  (and (has-north-neighbor y)
-       (map-ref map-tiles x (- y 1))))
+(define (has-north-neighbor row)
+  (>= (- row 1) 0))
 
-(define (has-east-neighbor map-width x)
-  (< (+ x 1) map-width))
+(define (north-neighbor map-tiles row column)
+  (and (has-north-neighbor row)
+       (map-ref map-tiles (- row 1) column)))
 
-(define (east-neighbor map-tiles x y)
-  (and (has-east-neighbor (map-width map-tiles) x)
-       (map-ref map-tiles (+ x 1) y)))
+(define (has-east-neighbor map-width column)
+  (< (+ column 1) map-width))
 
-(define (has-south-neighbor map-height y)
-  (< (+ y 1) map-height))
+(define (east-neighbor map-tiles row column)
+  (and (has-east-neighbor (map-width map-tiles) column)
+       (map-ref map-tiles row (+ column 1))))
 
-(define (south-neighbor map-tiles x y)
-  (and (has-south-neighbor (map-height map-tiles))
-       (map-ref map-tiles x (+ y 1))))
+(define (has-south-neighbor map-height row)
+  (< (+ row 1) map-height))
 
-(define (has-west-neighbor x)
-  (>= (- x 1) 0))
+(define (south-neighbor map-tiles row column)
+  (and (has-south-neighbor (map-height map-tiles) row)
+       (map-ref map-tiles (+ row 1) column)))
 
-(define (west-neighbor map-tiles x y)
-  (and (has-west-neighbor x)
-       (map-ref (- x 1) y)))
+(define (has-west-neighbor column)
+  (>= (- column 1) 0))
+
+(define (west-neighbor map-tiles row column)
+  (and (has-west-neighbor column)
+       (map-ref map-tiles row (- column 1))))
