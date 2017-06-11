@@ -4,8 +4,7 @@
          "rosette-pcg-utilities/source/choice.rkt"
          "rosette-pcg-utilities/source/assert.rkt"
          "tile.rkt"
-         "utilities.rkt"
-         "../data/tile-database.rkt")
+         "utilities.rkt")
 
 (provide make-map)
 
@@ -29,7 +28,7 @@
         [column (range (map-width map-tiles))])
     (valid! map-tiles row column)))
 
-(define (make-map map-height map-width)
+(define (make-map tiles map-height map-width)
   (let ([the-map (initialize-map tiles map-height map-width)])
     (map-valid! the-map)
     (evaluate the-map (solve asserts))))
