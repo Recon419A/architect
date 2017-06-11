@@ -1,24 +1,27 @@
 #lang rosette
 
 (require gigls/unsafe
-         "rosette-pcg-utilities/choice.rkt"
-         "rosette-pcg-utilities/assert.rkt"
+         "rosette-pcg-utilities/source/choice.rkt"
+         "rosette-pcg-utilities/source/assert.rkt"
+         "tile.rkt"
          "utilities.rkt"
          "../data/tile-database.rkt")
 
+(provide make-map)
+
 (define (valid! map-tiles row column)
-  (let ([map-tile (map-ref row column)]
+  (let ([map-tile (map-ref map-tiles row column)]
         [north-neighbor (north-neighbor map-tiles row column)]
         [east-neighbor (east-neighbor map-tiles row column)]
         [south-neighbor (south-neighbor map-tiles row column)]
         [west-neighbor (west-neighbor map-tiles row column)])
-    (and (north-neighbor)
+    (and north-neighbor
          (equal! (tile-north map-tile) (tile-south north-neighbor)))
-    (and (east-neighbor)
+    (and east-neighbor
          (equal! (tile-east map-tile) (tile-west east-neighbor)))
-    (and (south-neighbor)
+    (and south-neighbor
          (equal! (tile-south map-tile) (tile-north south-neighbor)))
-    (and (west-neighbor)
+    (and west-neighbor
          (equal! (tile-west map-tile) (tile-east west-neighbor)))))
 
 (define (map-valid! map-tiles)
@@ -26,18 +29,19 @@
         [column (range (map-width map-tiles))])
     (valid! map-tiles row column)))
 
-(define (make-map width height)
-  (let ([the-map (initialize-map width height tiles)])
+(define (make-map map-height map-width)
+  (let ([the-map (initialize-map tiles map-height map-width)])
     (map-valid! the-map)
     (evaluate the-map (solve asserts))))
 
-(define (initialize-map width height tiles)
-  (if (equal? 0 width) null
-      (cons (initialize-column height tiles) (initialize-map (- width 1) height tiles))))
+(define (initialize-map tiles map-height map-width)
+  (if (equal? 0 map-height) null
+      (cons (initialize-row tiles map-width)
+            (initialize-map tiles (- map-height 1) map-width))))
 
-(define (initialize-column height tiles)
-  (if (equal? 0 height) null
-      (cons (choose-random tiles) (initialize-column (- height 1) tiles))))
+(define (initialize-row tiles map-width)
+  (if (equal? 0 map-width) null
+      (cons (choose-random tiles) (initialize-row tiles (- map-width 1)))))
 
 (define (show-map a-map)
   (let* ([width (length a-map)]
@@ -58,9 +62,9 @@
     (image-select-nothing! blank-image)
     blank-image))
 
-(define a-map (make-map 3 3))
+;; (define a-map (make-map 3 3))
 
-(image-show (show-map a-map))
+;; (image-show (show-map a-map))
 
 ;; (image-show (tile-image (list-ref tiles 1)))
 
