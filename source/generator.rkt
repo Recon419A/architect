@@ -12,8 +12,17 @@
 (define (make-map tiles map-height map-width)
   (clear-asserts!)
   (let ([map-tiles (initialize-map tiles map-height map-width)])
-    (assert (valid? map-tiles))
+    (for* ([row (range map-height)]
+           [column (range (- map-width 1))])
+      (equal! (tile-east (map-ref map-tiles row column))
+              (tile-west (map-ref map-tiles row (+ column 1)))))
+    (for* ([row (range (- map-height 1))]
+           [column (range map-width)])
+      (equal! (tile-south (map-ref map-tiles row column))
+              (tile-north (map-ref map-tiles (+ row 1) column))))
     (evaluate map-tiles (solve asserts))))
+
+
 
 (define (initialize-map tiles map-height map-width)
   (if (equal? 0 map-height) null
