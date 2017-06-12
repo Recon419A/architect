@@ -6,6 +6,7 @@
          "../data/tile-database.rkt")
 
 (define colorization-pairings '())
+(define test-image (tile-image rotate-test-tile))
 
 (define (learn-colorization word num-queries image)
   (let ([hue-sum 0]
