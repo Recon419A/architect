@@ -59,3 +59,12 @@ To install Architect, just clone it and execute it using Racket.
 
 ## Running Architect
 In order to run Architect, GIMP needs to be running with the DBus server enabled. To start it, open GIMP and select `MediaScript -> DBus Server` to start the DBus Server used by `gigls`. You will then need to leave GIMP open as you develop.
+
+Architect currently has fairly limited functionality, as it is still in development. The core functionality right now consists of the ability to learn colorization filters that correspond to English language words, given a supervised classification system.
+
+### Teaching Architect a Color Filter
+To teach Architect a filter, execute `source/interface.rkt`. In the resulting REPL, run the command `(learn-colorization word num-queries image)` where `word` is a string representing the term you wish to teach the computer, `num-queries` is how many sample points you're willing to rate for the computer, and `image` is an image (for quick testing, substitute `test-image` here).
+
+Architect will then present you with an image (as a new image in GIMP), at which point you should enter a number between zero and one (such as `0.8`), indicating how much the colorization filter looks like what you want, and press enter. Architect will then show you another image, and the process will repeat `num-queries` times, after which Architect will show you a final image with the learned colorization and return you to the REPL. The colorization will be temporarily stored in the global variable `colorization-pairings`, but will be lost when you terminate or re-load the REPL. While it exists, you can apply a learned colorization to a new image with `(apply-colorization word image)`.
+
+Currently, the algorithm underlying `learn-colorization` is a placeholder for the eventual machine-learning system, and simply uses weighted averaging of random samples.
