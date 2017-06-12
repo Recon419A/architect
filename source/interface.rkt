@@ -7,12 +7,12 @@
 
 (define colorization-pairings '())
 
-(define (learn-colorization word image)
+(define (learn-colorization word num-queries image)
   (let ([hue-sum 0]
         [saturation-sum 0]
         [lightness-sum 0]
         [weight-sum 0])
-    (for ([i 8])
+    (for ([i num-queries])
       (let ([hue (random 360)]
             [saturation (random 100)]
             [lightness (random 100)])
