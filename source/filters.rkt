@@ -4,9 +4,9 @@
 
 (provide colorize)
 
-(define (colorize image map-height map-width hue saturation lightness)
-  (let* ([width (* map-width 1200)]
-         [height (* map-height 1200)]
+(define (colorize image hue saturation lightness)
+  (let* ([width (car (gimp-image-width image))]
+         [height (car (gimp-image-height image))]
          [new-image (image-new height width)])
     (image-select-rectangle! image REPLACE 0 0 width height)
     (gimp-edit-copy-visible image)
