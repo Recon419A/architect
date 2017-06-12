@@ -33,3 +33,6 @@
                                         colorization-pairings))
       (image-show colorized-image)
       colorized-image)))
+
+(define (apply-colorization word image)
+  (image-show (apply colorize image (cadr (assoc word colorization-pairings)))))
