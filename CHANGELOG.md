@@ -1,5 +1,8 @@
 # Changelog
 
+## Version 0.2.3
+- Update README to reflect 0.2.2 changes.
+
 ## Version 0.2.2
 - Rename rotate-test-tile to test-tile
 - Fix formatting issue in utilities-test.rkt
