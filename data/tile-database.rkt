@@ -5,7 +5,7 @@
          "../source/utilities.rkt")
 
 (provide tiles
-         rotate-test-tile)
+         test-tile)
 
 (define prefix "/home/recon/Dropbox/architect/data/")
 
@@ -29,4 +29,4 @@
 (define base-tiles (list tile-001 tile-002 tile-003 tile-004 tile-010 tile-020))
 (define tiles (add-rotations base-tiles))
 
-(define rotate-test-tile tile-002)
+(define test-tile tile-002)

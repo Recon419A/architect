@@ -3,7 +3,8 @@
 (require gigls/unsafe
          "../source/filters.rkt"
          "../source/tile.rkt"
+         "../source/colorization.rkt"
          "../data/tile-database.rkt")
 
 (define (smoke-test-colorize)
-  (image-show (colorize (tile-image rotate-test-tile) 200 80 80)))
+  (image-show (colorize (tile-image test-tile) (colorization 200 80 80))))
