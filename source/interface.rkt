@@ -8,7 +8,7 @@
          "../data/tile-database.rkt")
 
 (define ratings (make-hasheq))
-(define test-image (tile-image rotate-test-tile))
+(define test-image (tile-image test-tile))
 
 (define (learn-colorization term num-queries image)
   (let* ([existing-colorization (stored-or-null-colorization ratings term)]

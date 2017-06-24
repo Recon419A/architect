@@ -7,4 +7,4 @@
          "../data/tile-database.rkt")
 
 (define (smoke-test-colorize)
-  (image-show (colorize (tile-image rotate-test-tile) (colorization 200 80 80))))
+  (image-show (colorize (tile-image test-tile) (colorization 200 80 80))))

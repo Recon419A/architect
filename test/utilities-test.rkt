@@ -7,22 +7,22 @@
          "../data/tile-database.rkt")
 
 (define (smoke-test-rotate-image)
-  (image-show (tile-image rotate-test-tile))
-  (image-show (rotate-image (tile-image rotate-test-tile))))
+  (image-show (tile-image test-tile))
+  (image-show (rotate-image (tile-image test-tile))))
 
 (define (smoke-test-add-rotations)
-  (for ([each-tile (add-rotations (list rotate-test-tile))])
+  (for ([each-tile (add-rotations (list test-tile))])
     (image-show (tile-image each-tile))))
 
 (test-case "rotate-tile should rotate borders properly"
- (let ([rotated-tile (rotate-tile rotate-test-tile 1)])
-   (check-equal? (tile-north rotate-test-tile) (tile-east rotated-tile))
-   (check-equal? (tile-east rotate-test-tile) (tile-south rotated-tile))
-   (check-equal? (tile-south rotate-test-tile) (tile-west rotated-tile))
-   (check-equal? (tile-west rotate-test-tile) (tile-north rotated-tile))))
+ (let ([rotated-tile (rotate-tile test-tile 1)])
+   (check-equal? (tile-north test-tile) (tile-east rotated-tile))
+   (check-equal? (tile-east test-tile) (tile-south rotated-tile))
+   (check-equal? (tile-south test-tile) (tile-west rotated-tile))
+   (check-equal? (tile-west test-tile) (tile-north rotated-tile))))
 
 (test-case "add-rotations should return four rotations"
-  (check-equal? (length (add-rotations (list rotate-test-tile))) 4))
+  (check-equal? (length (add-rotations (list test-tile))) 4))
 
 (define test-map-1 '((1 2)
                      (3 4)))
