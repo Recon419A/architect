@@ -3,6 +3,7 @@
 (require gigls/unsafe
          "filters.rkt"
          "tile.rkt"
+         "effect.rkt"
          "../data/tile-database.rkt")
 
 (define colorization-pairings '())
