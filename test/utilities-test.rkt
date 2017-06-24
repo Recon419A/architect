@@ -54,8 +54,8 @@
   (check-equal? (south-neighbor test-map-1 1 1) #f))
 
 (test-case "south-neighbor should return south neighbor"
-  (check-equal? (south-neighbor test-map-1 0 0 3))
-  (check-equal? (south-neighbor test-map-1 0 1) 4))
+  (check-equal? (south-neighbor test-map-1 0 0 3)
+  (check-equal? (south-neighbor test-map-1 0 1) 4)))
 
 (test-case "west-neighbor should return #f for westmost column"
   (check-equal? (west-neighbor test-map-1 0 0) #f)

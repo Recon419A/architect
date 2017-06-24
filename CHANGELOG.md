@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+- Rename rotate-test-tile to test-tile
+- Fix formatting issue in utilities-test.rkt
+
 ## Version 0.2.1
 - Internal refactoring
 
