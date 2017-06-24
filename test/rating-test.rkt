@@ -13,9 +13,9 @@
                          test-colorization-2 test-weight-2))
 
 
-(define test-rating-1 (rating "term" test-colorization-1 test-weight-1 "user"))
-(define test-rating-2 (rating "term" test-colorization-2 test-weight-2 "user"))
+(define test-rating-1 (rating "term" test-colorization-1 test-weight-1))
+(define test-rating-2 (rating "term" test-colorization-2 test-weight-2))
 
 (test-case "combined-rating should combine the colorizations"
   (check-equal? (combined-rating test-rating-1 test-rating-2)
-                (rating "term" combined-test-colorization 1 "user")))
+                (rating "term" combined-test-colorization 1)))

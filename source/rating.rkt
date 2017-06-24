@@ -2,16 +2,15 @@
 
 (require "colorization.rkt")
 
-(provide rating combined-rating)
+(provide rating rating-colorization combined-rating)
 
-(define (rating term colorization score user)
-  (hasheq 'term term 'colorization colorization 'score score 'user user))
+(define (rating term colorization score)
+  (hasheq 'term term 'colorization colorization 'score score))
 
 (define (combined-rating rating-1 rating-2)
   (rating (rating-term rating-1)
           (combined-rating-colorization rating-1 rating-2)
-          (combined-rating-score rating-1 rating-2)
-          (rating-user rating-1)))
+          (combined-rating-score rating-1 rating-2)))
 
 (define (combined-rating-colorization rating-1 rating-2)
   (combined-colorization (rating-colorization rating-1)
@@ -30,6 +29,3 @@
 
 (define (rating-score rating)
   (hash-ref rating 'score))
-
-(define (rating-user rating)
-  (hash-ref rating 'user))

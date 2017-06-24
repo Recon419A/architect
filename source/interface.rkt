@@ -3,37 +3,51 @@
 (require gigls/unsafe
          "filters.rkt"
          "tile.rkt"
-         "effect.rkt"
+         "rating.rkt"
+         "colorization.rkt"
          "../data/tile-database.rkt")
 
-(define colorization-pairings '())
+(define ratings (make-hasheq))
 (define test-image (tile-image rotate-test-tile))
 
-(define (learn-colorization word num-queries image)
-  (let ([hue-sum 0]
-        [saturation-sum 0]
-        [lightness-sum 0]
-        [weight-sum 0])
-    (for ([i num-queries])
-      (let ([hue (random 360)]
-            [saturation (random 100)]
-            [lightness (random 100)])
-        (image-show (colorize image hue saturation lightness))
-        (let ([weight (read)])
-          (set! hue-sum (+ hue-sum (* weight hue)))
-          (set! saturation-sum (+ saturation-sum (* weight saturation)))
-          (set! lightness-sum (+ lightness-sum (* weight lightness)))
-          (set! weight-sum (+ weight-sum weight)))))
-    (let* ([hue (/ hue-sum weight-sum)]
-           [saturation (/ saturation-sum weight-sum)]
-           [lightness (/ lightness-sum weight-sum)]
-           [learned-colorization (list hue saturation lightness)]
-           [colorization-pairing (list word learned-colorization)]
-           [colorized-image (colorize image hue saturation lightness)])
-      (set! colorization-pairings (cons colorization-pairing
-                                        colorization-pairings))
-      (image-show colorized-image)
-      colorized-image)))
+(define (learn-colorization term num-queries image)
+  (let* ([existing-colorization (stored-or-null-colorization ratings term)]
+         [improved-colorization (improve-colorization term
+                                                      num-queries
+                                                      image
+                                                      existing-colorization)])
+    (hash-set! ratings term improved-colorization)))
 
-(define (apply-colorization word image)
-  (image-show (apply colorize image (cadr (assoc word colorization-pairings)))))
+
+(define (improve-colorization term num-queries image rating)
+  (if (<= num-queries 0) rating
+      (improve-colorization term (- num-queries 1) image
+                            (add-datapoint term image rating))))
+
+(define (add-datapoint term image rating)
+  (combined-rating rating (get-datapoint term image)))
+
+(define (get-datapoint term image)
+  (let ([colorization (random-colorization)])
+    (show-sample-and-get-rating term image colorization)))
+
+(define (show-sample-and-get-rating term image colorization)
+  (image-show (colorize image colorization))
+  (get-sample-rating term colorization))
+
+(define (get-sample-rating term colorization)
+  (let ([score (read)])
+    (rating term colorization score)))
+
+(define (apply-colorization term image)
+  (image-show (colorize image (rating-colorization
+                               (stored-colorization ratings term)))))
+
+(define (stored-or-null-colorization ratings term)
+  (or (stored-colorization ratings term) (null-rating term)))
+
+(define (stored-colorization ratings term)
+  (hash-ref ratings term #f))
+
+(define (null-rating term)
+  (rating term (random-colorization) 0))

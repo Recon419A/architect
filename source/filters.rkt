@@ -4,7 +4,7 @@
 
 (provide colorize)
 
-(define (colorize image hue saturation lightness)
+(define (colorize image colorization)
   (let* ([width (car (gimp-image-width image))]
          [height (car (gimp-image-height image))]
          [new-image (image-new height width)])
@@ -12,6 +12,6 @@
     (gimp-edit-copy-visible image)
     (image-select-nothing! image)
     (let ([pasted-image (car (gimp-edit-paste (image-get-layer new-image) 1))])
-      (gimp-colorize pasted-image hue saturation lightness)
+      (apply gimp-colorize pasted-image colorization)
       (gimp-image-flatten new-image)
       new-image)))
