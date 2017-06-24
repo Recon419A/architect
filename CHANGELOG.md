@@ -1,0 +1,8 @@
+# Changelog
+
+## Version 0.2.1
+- Internal refactoring
+
+## Version 0.2.0
+- Major refactoring
+- Seperated functionality for learn-colorization and apply-colorization
